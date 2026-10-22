@@ -34,6 +34,104 @@ header{position:sticky;top:0;z-index:10;background:#fffdfded;backdrop-filter:blu
 .cart-backdrop{position:fixed;inset:0;background:#171b1acc;z-index:30}.cart-backdrop[hidden]{display:none}.cart-panel{position:fixed;z-index:31;right:0;top:0;height:100dvh;width:min(440px,100%);background:#fffdfd;box-shadow:-18px 0 60px #0002;transform:translateX(105%);transition:transform .3s ease;display:flex;flex-direction:column;padding:22px}.cart-panel.open{transform:translateX(0)}.cart-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f1e5e7;padding-bottom:15px}.cart-head h2{font:500 30px 'Playfair Display',serif;margin:5px 0}.cart-close{border:0;background:#f8e8eb;border-radius:50%;width:38px;height:38px;cursor:pointer}.cart-items{overflow:auto;flex:1;padding:12px 0}.empty-cart{color:var(--muted);font-size:14px;line-height:1.7}.cart-line{display:grid;grid-template-columns:1fr auto;gap:12px;padding:14px 0;border-bottom:1px solid #f1e5e7}.cart-line h3{font-size:14px;margin:0 0 5px}.cart-line small{color:var(--muted)}.qty-controls{display:flex;align-items:center;gap:10px;margin-top:10px}.qty-controls button{width:28px;height:28px;border:1px solid #d8e5e1;background:#f0f7f5;border-radius:50%;cursor:pointer}.remove-line{border:0;background:none;color:#a34f62;font-size:11px;cursor:pointer;margin-top:6px;padding:0}.cart-summary{border-top:1px solid #eadfe1;padding-top:15px}.summary-row{display:flex;justify-content:space-between;align-items:center;font-size:15px}.delivery-note,.price-note{font-size:12px;line-height:1.6;color:var(--muted)}.price-note{color:#a34f62}.checkout-btn{width:100%;text-align:center;margin-top:6px}
 @media(max-width:760px){.nav{padding:11px 15px}.nav-links{display:none}.brand{font-size:18px}.brand img{width:36px;height:36px}.hero-inner{grid-template-columns:1fr;padding-top:42px;gap:5px}.hero-visual{min-height:320px}.hero-product{height:300px;width:230px}.blob{width:270px;height:270px}.note{left:3%;bottom:5px}.trust{padding:20px 10px;gap:8px;font-size:10px}.trust strong{font-size:12px}.section{padding:54px 16px}.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.product-image{height:205px}.info{padding:13px}.info h3{font-size:18px}.info p{font-size:11px}.bottom{align-items:flex-start;flex-direction:column}.order{width:100%}.story-inner{grid-template-columns:1fr;gap:25px;padding:48px 18px}.story-art{min-height:190px}.review-grid{grid-template-columns:1fr}.review-form,.review-card{padding:16px}}
 @media(max-width:420px){.products{grid-template-columns:1fr}.product-image{height:270px}.hero-actions{gap:12px}.hero-actions .btn{padding:12px 14px}.trust{font-size:9px}.trust strong{font-size:11px}}
+/* Ziorpure premium animations */
+@keyframes zpFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes zpFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.hero .eyebrow,
+.hero h1,
+.hero p,
+.hero-actions {
+  animation: zpFadeUp 0.8s ease both;
+}
+
+.hero h1 { animation-delay: 0.1s; }
+.hero p { animation-delay: 0.2s; }
+.hero-actions { animation-delay: 0.3s; }
+
+.hero-visual .blob {
+  animation: zpFloat 5s ease-in-out infinite;
+}
+
+.hero-product {
+  animation: zpFadeUp 1s ease both;
+  transition: transform 0.45s ease, box-shadow 0.45s ease;
+}
+
+.hero-product:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 30px 65px #6a414133;
+}
+
+.card {
+  transition: transform 0.35s ease,
+              box-shadow 0.35s ease,
+              border-color 0.35s ease;
+}
+
+.card:hover {
+  transform: translateY(-7px);
+  border-color: #e6c2cb;
+  box-shadow: 0 20px 40px #5c253018;
+}
+
+.product-image img {
+  transition: transform 0.5s cubic-bezier(.2,.7,.3,1);
+}
+
+.card:hover .product-image img {
+  transform: scale(1.07);
+}
+
+.btn, .nav-cta, .order, .checkout-btn {
+  transition: transform 0.25s ease,
+              background 0.25s ease,
+              box-shadow 0.25s ease;
+}
+
+.btn:hover, .nav-cta:hover, .order:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px #183e3a20;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(25px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  }
+  
 </style>
 </head>
 <body>
@@ -105,6 +203,34 @@ document.querySelectorAll('img').forEach(img => {
     img.style.objectFit = 'contain';
     img.style.background = '#f8e5e9';
     img.alt = img.alt || 'Image unavailable';
+    
+/* Ziorpure scroll reveal */
+(() => {
+  const targets = document.querySelectorAll(
+    '.trust, .heading, .card, .story-art, ' +
+    '.story-inner > div, .contact, .review-form, .review-card'
+  );
+
+  if (!('IntersectionObserver' in window)) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -30px 0px'
+  });
+
+  targets.forEach((element) => {
+    element.classList.add('reveal');
+    observer.observe(element);
+  });
+})();
+    
   });
 });
 </script>
