@@ -176,7 +176,7 @@ const cart={};const panel=document.getElementById('cart-panel');const backdrop=d
 const money=n=>'Rs. '+Number(n).toLocaleString('en-PK');
 function openCart(){panel.classList.add('open');panel.setAttribute('aria-hidden','false');backdrop.hidden=false;document.body.style.overflow='hidden'}
 function closeCart(){panel.classList.remove('open');panel.setAttribute('aria-hidden','true');backdrop.hidden=true;document.body.style.overflow=''}
-document.querySelectorAll('.add-cart').forEach(b=>b.addEventListener('click',()=>{const n=b.dataset.product;cart[n]=(cart[n]||0)+1;renderCart();openCart()}));
+document.querySelectorAll('.add-cart').forEach(b=>b.addEventListener('click',()=>{const n=b.dataset.product;cart[n]=(cart[n]||0)+1;renderCart())}));
 document.querySelectorAll('.cart-open').forEach(b=>b.addEventListener('click',openCart));document.getElementById('cart-close').addEventListener('click',closeCart);backdrop.addEventListener('click',closeCart);
 function changeQty(n,d){cart[n]=(cart[n]||0)+d;if(cart[n]<=0)delete cart[n];renderCart()}
 function renderCart(){const entries=Object.entries(cart);document.getElementById('cart-count').textContent=entries.reduce((s,[,q])=>s+q,0);
